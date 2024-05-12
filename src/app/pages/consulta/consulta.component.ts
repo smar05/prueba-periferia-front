@@ -10,6 +10,7 @@ import { EnumTipoDocumento } from 'src/app/enums/EnumTipoDocumento';
 import { EnumVariablesGlobales } from 'src/app/enums/EnumVariablesGlobales';
 import { IConsulta } from 'src/app/interfaces/IConsulta';
 import { IUsuario } from 'src/app/interfaces/IUsuario';
+import { AlertService } from 'src/app/services/alert.service';
 import { ApiBackService } from 'src/app/services/api-back.service';
 import { VariablesGlobalesService } from 'src/app/services/variables-globales.service';
 
@@ -45,7 +46,8 @@ export class ConsultaComponent implements OnInit {
     private obser: VariablesGlobalesService,
     private form: UntypedFormBuilder,
     private apiBackService: ApiBackService,
-    private router: Router
+    private router: Router,
+    private alertService: AlertService
   ) {}
 
   public ngOnInit(): void {
@@ -87,6 +89,40 @@ export class ConsultaComponent implements OnInit {
         .toPromise()) as any;
     } catch (error) {
       console.error(error);
+
+      switch ((error as any).status) {
+        case 404: // Not found
+          this.alertService.basicAlert(
+            'Alerta',
+            'No se encontraron datos',
+            'warning'
+          );
+          break;
+
+        case 400:
+          this.alertService.basicAlert(
+            'Error',
+            'No se puede procesar la solicitud',
+            'error'
+          );
+          break;
+
+        case 500:
+          this.alertService.basicAlert(
+            'Error',
+            'Error en el servidor',
+            'error'
+          );
+          break;
+
+        default:
+          this.alertService.basicAlert(
+            'Error',
+            'Ha ocurrido un error',
+            'error'
+          );
+          break;
+      }
       throw error;
     }
 
