@@ -1,1 +1,15 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --main-bg-color: #002c76;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+}
+
+.bg-c-blue {
+  background-color: var(--main-bg-color);
+}
