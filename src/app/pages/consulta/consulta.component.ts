@@ -4,9 +4,12 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
+import { EnumRutas } from 'src/app/enums/EnumRutas';
 import { EnumTipoDocumento } from 'src/app/enums/EnumTipoDocumento';
 import { EnumVariablesGlobales } from 'src/app/enums/EnumVariablesGlobales';
 import { IConsulta } from 'src/app/interfaces/IConsulta';
+import { IUsuario } from 'src/app/interfaces/IUsuario';
 import { ApiBackService } from 'src/app/services/api-back.service';
 import { VariablesGlobalesService } from 'src/app/services/variables-globales.service';
 
@@ -41,7 +44,8 @@ export class ConsultaComponent implements OnInit {
   constructor(
     private obser: VariablesGlobalesService,
     private form: UntypedFormBuilder,
-    private apiBackService: ApiBackService
+    private apiBackService: ApiBackService,
+    private router: Router
   ) {}
 
   public ngOnInit(): void {
@@ -75,15 +79,19 @@ export class ConsultaComponent implements OnInit {
       tipoDocumento,
     };
 
-    let res: any = null;
+    let res: IUsuario = null as any;
     try {
-      res = await this.apiBackService
+      res = (await this.apiBackService
         .getByTipoDocumentoAndNumeroDocumento(dataConsulta)
-        .toPromise();
-      console.log('🚀 ~ ConsultaComponent ~ buscar ~ res:', res);
+        .toPromise()) as any;
     } catch (error) {
       console.error(error);
       throw error;
     }
+
+    if (!res) return;
+
+    this.obser.setData(EnumVariablesGlobales.DATOS_USUARIO, res);
+    this.router.navigate([EnumRutas.INFORMACION]);
   }
 }
