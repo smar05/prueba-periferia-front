@@ -28,7 +28,12 @@ export class ConsultaComponent implements OnInit {
     numeroDocumento: [
       '',
       {
-        validators: [Validators.required, Validators.pattern(/^\d{8,11}$/)],
+        validators: [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(14),
+          Validators.pattern(/^\d{1,3}( \d{3})*$/),
+        ],
       },
     ],
   });
@@ -78,7 +83,7 @@ export class ConsultaComponent implements OnInit {
     }
 
     let dataConsulta: IConsulta = {
-      numeroDocumento: Number(this.numeroDocumento.value),
+      numeroDocumento: Number(this.numeroDocumento.value?.split(' ').join('')),
       tipoDocumento,
     };
 
@@ -130,5 +135,20 @@ export class ConsultaComponent implements OnInit {
 
     this.obser.setData(EnumVariablesGlobales.DATOS_USUARIO, res);
     this.router.navigate([EnumRutas.INFORMACION]);
+  }
+
+  /**
+   * Funcion para separar por miles el numero de documento
+   *
+   * @memberof ConsultaComponent
+   */
+  public formatNumber(): void {
+    let numero: string = this.f.controls['numeroDocumento'].value;
+
+    numero = numero
+      .replace(/\s/g, '')
+      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
+
+    this.f.controls['numeroDocumento'].setValue(numero, { emitEvent: false });
   }
 }
