@@ -21,6 +21,8 @@ export class InformacionComponent implements OnInit {
 
   public ngOnInit(): void {
     this.obser.setData(EnumVariablesGlobales.TITULO_NAVBAR, 'Información');
+    this.obser.setData(EnumVariablesGlobales.ATRAS_NAVBAR, true);
+    this.obser.setData(EnumVariablesGlobales.URL_ATRAS, EnumRutas.INICIO);
     this.consultarDatos();
   }
 

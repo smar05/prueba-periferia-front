@@ -19,6 +19,7 @@
               'is-invalid': tipoDocumento.invalid
             }"
           >
+            <option value="" disabled selected>Tipo de documento</option>
             <option
               *ngFor="let tipoDocumento of this.tiposDeDocumentos"
               [value]="tipoDocumento"

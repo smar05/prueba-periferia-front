@@ -23,7 +23,7 @@ export class ConsultaComponent implements OnInit {
 
   //Grupo de controles
   public f: UntypedFormGroup = this.form.group({
-    tipoDocumento: [EnumTipoDocumento.C, { validators: [Validators.required] }],
+    tipoDocumento: ['', { validators: [Validators.required] }],
     numeroDocumento: [
       '',
       {
@@ -54,6 +54,7 @@ export class ConsultaComponent implements OnInit {
       EnumVariablesGlobales.TITULO_NAVBAR,
       'Consulta de documento'
     );
+    this.obser.setData(EnumVariablesGlobales.ATRAS_NAVBAR, false);
   }
 
   /**
