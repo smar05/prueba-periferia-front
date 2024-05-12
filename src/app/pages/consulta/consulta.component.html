@@ -1,22 +1,15 @@
 <div class="row h-25"></div>
 
 <form action="#" class="align-middle">
-  <div
-    class="card border mb-3 mx-auto"
-    style="
-      max-width: 20rem;
-      border-color: #002c76 !important;
-      background-color: #f7fbff;
-    "
-  >
+  <div class="card border mb-3 mx-auto card-style">
     <small class="text-secondary m-3 my-0"
       >Todos los campos son obligatorios</small
     >
     <div class="card-body pt-0">
       <div class="card-text">
-        <div>
-          <label for="tipoDocumento" class="form-label" style="color: #002c76"
-            >Tipo de documento</label
+        <div class="mt-2">
+          <small for="tipoDocumento" class="form-label color-blue"
+            >Tipo de documento</small
           >
           <select class="form-select py-3" id="tipoDocumento">
             <option value="CC">Cédula de ciudadanía</option>
@@ -25,9 +18,9 @@
           </select>
         </div>
 
-        <div>
-          <label for="numeroDocumento" class="form-label" style="color: #002c76"
-            >Número de documento</label
+        <div class="mt-2">
+          <small for="numeroDocumento" class="form-label color-blue"
+            >Número de documento</small
           >
           <input
             type="number"
@@ -40,8 +33,7 @@
         <div class="d-flex justify-content-center mt-3">
           <button
             type="submit"
-            class="btn btn-primary rounded-pill btn-lg px-5"
-            style="background-color: #002c76; width: 70%"
+            class="btn btn-primary rounded-pill btn-lg px-5 w-70 bg-c-blue"
           >
             <h6 class="my-1">Buscar</h6>
           </button>

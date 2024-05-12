@@ -13,3 +13,7 @@ body {
 .bg-c-blue {
   background-color: var(--main-bg-color);
 }
+
+.color-blue {
+  color: var(--main-bg-color);
+}
