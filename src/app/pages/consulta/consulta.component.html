@@ -1,6 +1,6 @@
 <div class="row h-25"></div>
 
-<form action="#" class="align-middle">
+<form class="align-middle" [formGroup]="f" (submit)="this.buscar()">
   <div class="card border mb-3 mx-auto card-style">
     <small class="text-secondary m-3 my-0"
       >Todos los campos son obligatorios</small
@@ -11,10 +11,20 @@
           <small for="tipoDocumento" class="form-label color-blue"
             >Tipo de documento</small
           >
-          <select class="form-select py-3" id="tipoDocumento">
-            <option value="CC">Cédula de ciudadanía</option>
-            <option value="CE">Cédula de extranjería</option>
-            <option value="PP">Pasaporte</option>
+          <select
+            class="form-select py-3"
+            id="tipoDocumento"
+            formControlName="tipoDocumento"
+            [ngClass]="{
+              'is-invalid': tipoDocumento.invalid
+            }"
+          >
+            <option
+              *ngFor="let tipoDocumento of this.tiposDeDocumentos"
+              [value]="tipoDocumento"
+            >
+              {{ tipoDocumento }}
+            </option>
           </select>
         </div>
 
@@ -23,10 +33,16 @@
             >Número de documento</small
           >
           <input
-            type="number"
+            type="text"
             class="form-control py-3"
             id="numeroDocumento"
             placeholder="Ingrese el número de documento"
+            formControlName="numeroDocumento"
+            minlength="8"
+            maxlength="11"
+            [ngClass]="{
+              'is-invalid': numeroDocumento.invalid
+            }"
           />
         </div>
 
@@ -34,6 +50,8 @@
           <button
             type="submit"
             class="btn btn-primary rounded-pill btn-lg px-5 w-70 bg-c-blue"
+            [ngClass]="{ 'btn-secondary': this.f.invalid }"
+            [disabled]="this.f.invalid"
           >
             <h6 class="my-1">Buscar</h6>
           </button>
