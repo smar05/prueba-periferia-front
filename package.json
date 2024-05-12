@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test --code-coverage",
+    "test:unit": "ng test --include='src/app/services/variables-globales.service.spec.ts' --code-coverage"
   },
   "private": true,
   "dependencies": {

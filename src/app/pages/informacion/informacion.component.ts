@@ -12,7 +12,7 @@ import { VariablesGlobalesService } from 'src/app/services/variables-globales.se
   styleUrls: ['./informacion.component.css'],
 })
 export class InformacionComponent implements OnInit {
-  public datosUsuario: IUsuario = null as any;
+  public datosUsuario: IUsuario = {} as any;
 
   constructor(
     private obser: VariablesGlobalesService,
