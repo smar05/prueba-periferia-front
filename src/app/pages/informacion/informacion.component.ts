@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { EnumRutas } from 'src/app/enums/EnumRutas';
 import { EnumTipoDocumento } from 'src/app/enums/EnumTipoDocumento';
 import { EnumVariablesGlobales } from 'src/app/enums/EnumVariablesGlobales';
 import { IUsuario } from 'src/app/interfaces/IUsuario';
@@ -12,7 +14,10 @@ import { VariablesGlobalesService } from 'src/app/services/variables-globales.se
 export class InformacionComponent implements OnInit {
   public datosUsuario: IUsuario = null as any;
 
-  constructor(private obser: VariablesGlobalesService) {}
+  constructor(
+    private obser: VariablesGlobalesService,
+    private router: Router
+  ) {}
 
   public ngOnInit(): void {
     this.obser.setData(EnumVariablesGlobales.TITULO_NAVBAR, 'Información');
@@ -20,9 +25,10 @@ export class InformacionComponent implements OnInit {
   }
 
   private consultarDatos(): void {
-    this.obser
-      .getData(EnumVariablesGlobales.DATOS_USUARIO)
-      .subscribe((res: IUsuario) => {
+    this.obser.getData(EnumVariablesGlobales.DATOS_USUARIO).subscribe(
+      (res: IUsuario) => {
+        if (!res) this.router.navigate([`${EnumRutas.INICIO}`]);
+
         let tiposDocumento: { [key: string]: string } = EnumTipoDocumento;
         let tipoDocumento: string = '';
         for (const key of Object.keys(tiposDocumento)) {
@@ -32,6 +38,11 @@ export class InformacionComponent implements OnInit {
           }
         }
         this.datosUsuario = { ...res, tipoDocumento };
-      });
+      },
+      (error) => {
+        console.error(error);
+        this.router.navigate([`${EnumRutas.INICIO}`]);
+      }
+    );
   }
 }
