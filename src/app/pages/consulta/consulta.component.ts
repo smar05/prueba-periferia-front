@@ -7,6 +7,7 @@ import {
 import { EnumTipoDocumento } from 'src/app/enums/EnumTipoDocumento';
 import { EnumVariablesGlobales } from 'src/app/enums/EnumVariablesGlobales';
 import { IConsulta } from 'src/app/interfaces/IConsulta';
+import { ApiBackService } from 'src/app/services/api-back.service';
 import { VariablesGlobalesService } from 'src/app/services/variables-globales.service';
 
 @Component({
@@ -19,10 +20,7 @@ export class ConsultaComponent implements OnInit {
 
   //Grupo de controles
   public f: UntypedFormGroup = this.form.group({
-    tipoDocumento: [
-      EnumTipoDocumento.CEDULA_CIUDADANIA,
-      { validators: [Validators.required] },
-    ],
+    tipoDocumento: [EnumTipoDocumento.C, { validators: [Validators.required] }],
     numeroDocumento: [
       '',
       {
@@ -42,7 +40,8 @@ export class ConsultaComponent implements OnInit {
 
   constructor(
     private obser: VariablesGlobalesService,
-    private form: UntypedFormBuilder
+    private form: UntypedFormBuilder,
+    private apiBackService: ApiBackService
   ) {}
 
   public ngOnInit(): void {
@@ -59,12 +58,32 @@ export class ConsultaComponent implements OnInit {
    * @return {*}  {void}
    * @memberof ConsultaComponent
    */
-  public buscar(): void {
+  public async buscar(): Promise<void> {
     if (this.f.invalid) return;
+
+    let tipoDocumento: string = this.tipoDocumento.value;
+    let tiposDocumentosObject: { [key: string]: string } = EnumTipoDocumento;
+    for (const key of Object.keys(tiposDocumentosObject)) {
+      if (tiposDocumentosObject[key] === tipoDocumento) {
+        tipoDocumento = key;
+        break;
+      }
+    }
 
     let dataConsulta: IConsulta = {
       numeroDocumento: Number(this.numeroDocumento.value),
-      tipoDocumento: this.tipoDocumento.value,
+      tipoDocumento,
     };
+
+    let res: any = null;
+    try {
+      res = await this.apiBackService
+        .getByTipoDocumentoAndNumeroDocumento(dataConsulta)
+        .toPromise();
+      console.log('🚀 ~ ConsultaComponent ~ buscar ~ res:', res);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 }
