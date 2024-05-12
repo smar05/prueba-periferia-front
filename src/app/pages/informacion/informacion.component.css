@@ -1,0 +1,4 @@
+.card-style {
+  max-width: 20rem;
+  border-color: var(--main-bg-color) !important;
+}
